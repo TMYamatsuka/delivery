@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+     <h:head>
+        <meta charset='utf-8'/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="../css/styles.css"/>
+        <title>Cadastro de Produtos</title>
+    </h:head>
+    <h:body>
+        <h1 class="title">Cadastro de Produtos</h1>
+        <div id='cssmenu'>
+          <ul>
+            <li><h:link outcome="clienteGerenciar" value="Gerenciar Clientes"/></li>
+            <li><h:link outcome="admGerenciar" value="Gerenciar Administrador"/></li>
+            <li class='last'><h:link outcome="compraGerenciar" value="Gerenciar Compra"/></li>
+          </ul>
+        </div>
+        <h:form id="formCadastro">
+            <h:panelGrid style="color: #fff;" columns="2">
+              <p:outputLabel value="Nome:"/>
+              <p:inputText value="#{pedidoControle.pedido.nome}" maxlength="50" 
+                           required="true" requiredMessage="Nome obrigatório" />
+              <p:outputLabel value="Comprado:"/>
+              <h:selectOneRadio value="#{pedidoControle.pedido.comprado}">
+                <f:selectItem itemValue="#{true}" itemLabel="Sim"/>
+                <f:selectItem itemValue="#{false}" itemLabel="Não"/>
+              </h:selectOneRadio>
+              <span/>
+              <p:commandButton value="Salvar" action="#{pedidoControle.salvarNovoPedido}" 
+                               update="formCadastro, :formTabela"/>
+            </h:panelGrid>
+            <p/> <p:messages showIcon="false" closable="true"/>
+        </h:form> <p/>
+        <h:form id="formTabela">
+            <p:dataTable id="tabFilmes" emptyMessage="Nenhum pedido cadastrado" 
+                         var="filme" value="#{pedidoControle.pedidos}">
+                <p:column headerText="Código:">
+                    <h:outputText value="#{pedido.codigo}"/>
+                </p:column>
+                <p:column headerText="Nome:">
+                    <h:outputText value="#{pedido.nome}"/>
+                </p:column>
+                <p:column headerText="">
+                    <p:commandButton value="Editar" action="#{pedidoControle.preparaAlterar(pedido)}" 
+                                     onclick="PF('editarPedidoDialog').show()" update=":formAltera"/>
+                </p:column>                
+                <p:column headerText="">                    
+                    <p:commandButton value="Excluir" actionListener="#{pedidoControle.excluir(pedido)}" update=":formTabela">
+                        <p:confirm header="Excluir pedido" message="Tem certeza que deseja excluir este pedido?"/>
+                    </p:commandButton>                    
+                </p:column>                
+            </p:dataTable>            
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:outputPanel style="width: 100%; text-align:center" > 
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"/>
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
+                </p:outputPanel>
+            </p:confirmDialog>
+        </h:form>
+        <p:dialog id="editarPedidoDialog" widgetVar="editarPedidoDialog" modal="true" header="Alteração de pedido">   
+            <h:form id="formAltera">  
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Código: "/>
+                    <p:inputText id="campoLogin" size="14" value="#{pedidoControle.aux.codigo}" disabled="true"/>                       
+                    <h:outputLabel value="Nome: "/>
+                    <p:inputText value="#{pedidoControle.aux.nome}" required="true" requiredMessage="Nome obrigatório" />
+                    <h:outputLabel value="Situação: "/>
+                    <h:selectOneRadio value="#{pedidoControle.aux.comprado}">
+                        <f:selectItem itemValue="#{true}" itemLabel="Sim"/>
+                        <f:selectItem itemValue="#{false}" itemLabel="Não"/>
+                    </h:selectOneRadio>
+                </h:panelGrid> <p/>
+                <p:outputPanel style="width: 100%; text-align:center" >
+                    <p:commandButton value="Continuar" style="width: 150px;" ajax="false" 
+                                     action="#{pedidoControle.alterar()}" styleClass="ui-state-hover"/> 
+                </p:outputPanel>
+                <p:outputPanel style="width: 100%; text-align:center" >
+                    <p:messages id="msgPopup" showIcon="false" closable="true" />
+                </p:outputPanel>  
+            </h:form >
+        </p:dialog>
+    </h:body>
+</html>

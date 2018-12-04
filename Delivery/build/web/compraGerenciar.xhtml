@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+   <h:head>
+        <meta charset='utf-8'/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="../css/styles.css"/>
+        <title>Pedidos</title>
+    </h:head>
+    <h:body>
+        <h1 class="title">Compra de Produtos</h1>
+        <div id='cssmenu'>
+          <ul>
+            <li><h:link outcome="pedidoGerenciar" value="Gerenciar Pedidos"/></li>
+            <li><h:link outcome="clienteGerenciar" value="Gerenciar Clientes"/></li>
+            <li class='last'><h:link outcome="admGerenciar" value="Gerenciar Administrador"/></li>
+          </ul>
+        </div>
+        <h:form id="formCadastro">             
+            <h:panelGrid style="color: #fff;" columns="2">
+                <h:outputLabel value="Cliente:"/>
+                <p:selectOneMenu id="comboCliente" converter="clienteConverter"
+                             value="#{compraControle.clienteSelecionado}"
+                             required="true" requiredMessage="Selecione um cliente">
+                    <f:selectItem itemValue="#{null}" itemLabel="Selecione uma opção"/>               
+                    <f:selectItems value="#{compraControle.clientes}" var="item" 
+                                   itemValue="#{item}" itemLabel="#{item.nome}"/>  
+                </p:selectOneMenu>
+                <h:outputLabel value="Pedido:"/>
+                <p:selectOneMenu id="comboFilme" converter="produtoConverter"
+                                 value="#{compraControle.produtoSelecionado}"            
+                                 required="true" requiredMessage="Selecione um filme">
+                    <f:selectItem itemValue="#{null}" itemLabel="Selecione uma opção"/>
+                    <f:selectItems value="#{compraControle.pedidos}" var="item" 
+                                   itemValue="#{item}" itemLabel="#{item.nome}"/>
+                </p:selectOneMenu>
+                <span/>
+                <p:commandButton value="Comprar" action="#{compraControle.comprar()}" update="formCadastro, :formTabela"/>
+            </h:panelGrid>
+            <p/> <p:messages showIcon="false" closable="true"/>
+       </h:form>
+        <h:form id="formTabela">
+            <p:dataTable id="tabFilmes" emptyMessage="Nenhumacompra cadastrada" var="item" value="#{compraControle.alProdutos}"/>
+                <p:column headerText="Código:">
+                    <h:outputText value="#{item.codigo}"/>
+                </p:column>
+                <p:column headerText="Cliente:">
+                    <h:outputText value="#{item.cliente.nome}"/>
+                </p:column>
+          </h:form >
+    </h:body>
+</html>

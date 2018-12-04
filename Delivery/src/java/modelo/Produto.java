@@ -11,27 +11,32 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "administrador")
-public class Administrador implements Serializable {
+@Table(name="produto")
+public class Produto implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo")
-    private Integer codigo;    
+    private Integer codigo;
+    
     @Column(length=50, name="nome")
-    private String nome;    
-    @Column(length=15, name="login")
-    private String login;    
-    @Column(length= 10, name = "senha")
-    private String senha;
-    
-    //public Administrador(String nome, String senha, String login){
-    //    this.nome = nome;
-    //    this.senha = senha;
-    //    this.login = login;
-    //}
-   
-    
+    private String nome; 
 
+    @Column(name="comprado")
+    private Boolean comprado;
+    
+    public Produto(){
+        codigo = 0;
+        nome = "";
+        comprado = false;
+    }
+    public Produto(int codigo, String nome){
+        this.codigo = codigo;
+        this.nome = nome;
+    }
+    public Produto(int cod){
+        this.codigo = cod;
+    }
+    
     public Integer getCodigo() {
         return codigo;
     }
@@ -47,29 +52,21 @@ public class Administrador implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
-    public String getLogin() {
-        return login;
+    
+    public Boolean getComprado() {
+        return comprado;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setComprado(Boolean comprado) {
+        this.comprado = comprado;
     }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 23 * hash + Objects.hashCode(this.codigo);
-        hash = 23 * hash + Objects.hashCode(this.login);
-
+        hash = 29 * hash + Objects.hashCode(this.codigo);
+        hash = 29 * hash + Objects.hashCode(this.nome);
+        hash = 29 * hash + Objects.hashCode(this.comprado);
         return hash;
     }
 
@@ -81,18 +78,13 @@ public class Administrador implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Administrador other = (Administrador) obj;
+        final Produto other = (Produto) obj;
         if (!Objects.equals(this.codigo, other.codigo)) {
             return false;
         }
-     
-        
-          if (!Objects.equals(this.senha, other.senha)) {
+        if (!Objects.equals(this.nome, other.nome)) {
             return false;
         }
         return true;
     }
-
-    
-    
 }

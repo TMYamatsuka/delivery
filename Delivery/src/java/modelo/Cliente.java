@@ -9,28 +9,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name = "administrador")
-public class Administrador implements Serializable {
+@Table(name="cliente")
+public class Cliente implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo")
-    private Integer codigo;    
-    @Column(length=50, name="nome")
-    private String nome;    
-    @Column(length=15, name="login")
-    private String login;    
-    @Column(length= 10, name = "senha")
-    private String senha;
+    private Integer codigo;
+    @Column(length = 50, name = "nome")
+    private String nome;
+    @Column(length = 14, name = "cpf")
+    private String cpf;
+    @Column(length = 20, name = "telefone")
+    private String telefone;  
     
-    //public Administrador(String nome, String senha, String login){
-    //    this.nome = nome;
-    //    this.senha = senha;
-    //    this.login = login;
-    //}
-   
-    
+    public Cliente(){
+        codigo = 0;
+        nome = "";
+        cpf = "";
+        telefone = "";
+    }
+    public Cliente(String nome, String cpf, String telefone){
+        this.nome = nome;
+        this.cpf = cpf;
+        this.telefone = telefone;
+    }
 
     public Integer getCodigo() {
         return codigo;
@@ -47,29 +50,12 @@ public class Administrador implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 23 * hash + Objects.hashCode(this.codigo);
-        hash = 23 * hash + Objects.hashCode(this.login);
-
+        hash = 31 * hash + Objects.hashCode(this.codigo);
+        hash = 31 * hash + Objects.hashCode(this.nome);
         return hash;
     }
 
@@ -81,18 +67,30 @@ public class Administrador implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Administrador other = (Administrador) obj;
+        final Cliente other = (Cliente) obj;
         if (!Objects.equals(this.codigo, other.codigo)) {
             return false;
         }
-     
-        
-          if (!Objects.equals(this.senha, other.senha)) {
+        if (!Objects.equals(this.nome, other.nome)) {
             return false;
         }
         return true;
     }
 
-    
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
     
 }

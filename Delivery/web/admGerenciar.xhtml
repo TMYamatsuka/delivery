@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta charset='utf-8'/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="../css/styles.css"/>
+        <title>Cadastro de Administrador</title>
+    </h:head>
+    <h:body>
+        <h1 class="title">Cadastro de Administrador</h1>
+        <div id='cssmenu'>
+          <ul>
+            <li><h:link outcome="pedidoGerenciar" value="Gerenciar Pedidos"/></li>
+            <li><h:link outcome="clienteGerenciar" value="Gerenciar Clientes"/></li>
+            <li class='last'><h:link outcome="admGerenciar" value="Gerenciar Administrador"/></li>
+          </ul>
+        </div>
+        <h:form id="formCadastro">            
+            <h:panelGrid style="color: #fff;" columns="2">
+            <p:outputLabel value="Nome:"/>
+            <p:inputText value="#{admControle.adm.nome}" required="true" requiredMessage="Nome obrigatório"/>
+            <p:outputLabel value="Login:"/>
+            <p:inputText value="#{admControle.adm.login}"/>
+            <p:outputLabel value="Senha:"/>
+            <p:inputText value="#{admControle.adm.senha}"/>
+            <span/>
+            <p:commandButton value="Salvar" action="#{admControle.salvarNovoAdm()}" update="formCadastro, :formTabela"/>
+            <p/><p:messages showIcon="false" closable="true" />
+            </h:panelGrid>
+        </h:form>
+        <h:form id="formTabela">
+            <p:dataTable id="tabAdms" emptyMessage="Nenhum administrador cadastrado"
+                         var="adm" value="#{admControle.adms}">
+                <p:column headerText="Código: ">
+                    <h:outputText value="#{adm.codigo}"/>
+                </p:column>
+                <p:column headerText="Nome: ">
+                    <h:outputText value="#{adm.nome}"/>
+                </p:column>
+                <p:column headerText="Login: ">
+                    <h:outputText value="#{adm.login}"/>
+                </p:column>
+                <p:column headerText="Senha: ">
+                    <h:outputText value="#{adm.senha}"/>
+                </p:column>
+                <p:column headerText="">
+                    <p:commandButton value="Editar" action="#{admControle.preparaAlterar(adm)}" 
+                                     onclick="PF('editarAdmDialog').show()" update=":formAltera"/>
+                </p:column>
+                <p:column headerText="">
+                    <p:commandButton value="Excluir" actionListener="#{admControle.excluir(adm)}" update=":formTabela">
+                        <p:confirm header="Excluir administrador" message="Tem certeza que deseja excluir este administrador?"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:outputPanel style="width: 100%; text-align:center" layout="block"> 
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"/>
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
+                </p:outputPanel>
+            </p:confirmDialog>
+        </h:form>
+        <p:dialog id="editarAdmDialog" widgetVar="editarAdmDialog" modal="true" header="Alteração de administrador">   
+            <h:form id="formAltera">  
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Código: "/>
+                    <p:inputText id="campoLogin" value="#{admControle.aux.codigo}" disabled="true"/>                       
+                    <h:outputLabel value="Nome: "/>
+                    <p:inputText value="#{admControle.aux.nome}" required="true" requiredMessage="Nome obrigatório"/>
+                    <h:outputLabel value="Login: "/>
+                    <p:inputText value="#{admControle.aux.login}"/>
+                    <h:outputLabel value="Senha: "/>
+                    <p:inputText value="#{admControle.aux.senha}"/>
+                </h:panelGrid> <p/>
+                <p:outputPanel style="width: 100%; text-align:center" >
+                    <p:commandButton value="Continuar" icon="ui-icon-check" style="width: 150px;" ajax="false"
+                                     action="#{admControle.alterar()}" styleClass="ui-state-hover"/> 
+                </p:outputPanel>
+                <p:outputPanel style="width: 100%; text-align:center" >
+                    <p:messages id="msgPopup" showIcon="false" closable="true"/>
+                </p:outputPanel>  
+            </h:form >
+        </p:dialog>
+    </h:body>
+</html>
